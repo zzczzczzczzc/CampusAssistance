@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CampusAssistance</string>
+
+    <!--tab-->
+    <string name="goods">商品</string>
+    <string name="lost_and_fount">失物招领</string>
+    <string name="mine">我的</string>
+
+</resources>
