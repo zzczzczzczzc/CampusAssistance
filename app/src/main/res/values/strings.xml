@@ -6,4 +6,15 @@
     <string name="lost_and_fount">失物招领</string>
     <string name="mine">我的</string>
 
+    <!--mine-->
+    <string name="nickname">昵称</string>
+    <string name="release_goods">发布商品</string>
+    <string name="released_record">发布历史</string>
+    <string name="change_password">修改密码</string>
+    <string name="commonly_used">常用</string>
+
+    <!--goods-->
+    <string name="want_to_search">请输入想要搜索的内容</string>
+    <string name="search">搜索</string>
+
 </resources>

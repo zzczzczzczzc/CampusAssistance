@@ -1,8 +1,10 @@
-package com.example.campusassistance;
+package com.example.campusassistance.init;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.campusassistance.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -4,18 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".init.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_display"
-        android:name="com.moyu.browser_moyu.searchpage.activity.SearchPageFragment"
+        android:name="com.example.campusassistance.goods.fragment.GoodsListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_navigation_list"
-        android:name="com.moyu.browser_moyu.navigationlist.activity.NavigationListFragment"
+        android:id="@+id/fragment_navigation"
+        android:name="com.example.campusassistance.init.fragment.NavigationFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="15" />

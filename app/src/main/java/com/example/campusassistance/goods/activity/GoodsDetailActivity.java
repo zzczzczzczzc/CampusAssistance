@@ -2,6 +2,8 @@ package com.example.campusassistance.goods.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.campusassistance.R;
+
 import android.os.Bundle;
 
 public class GoodsDetailActivity extends AppCompatActivity {

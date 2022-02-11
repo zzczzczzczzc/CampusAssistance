@@ -11,7 +11,7 @@
         android:theme="@style/Theme.CampusAssistance">
         <activity android:name=".goods.activity.OneByOneChatAcitvity"></activity>
         <activity android:name=".goods.activity.GoodsDetailActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".init.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
