@@ -8,12 +8,18 @@
         android:id="@+id/iv_thing"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/avatar"/>
+        android:background="@drawable/avatar" />
 
     <TextView
         android:id="@+id/tv_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="物品描述" />
+        android:text="@string/description" />
+
+    <TextView
+        android:id="@+id/tv_prices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/prices" />
 
 </LinearLayout>
