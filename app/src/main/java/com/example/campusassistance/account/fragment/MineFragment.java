@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.campusassistance.R;
+import com.example.campusassistance.account.activity.ReleaseGood;
 import com.example.campusassistance.account.servlet.ChangePassword;
 import com.example.campusassistance.account.servlet.Login;
 
@@ -95,7 +96,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 if (!mIsLogin) {
                     toastLoginTip();
                 } else {
-
+                    Intent intent1 = new Intent(getActivity(), ReleaseGood.class);
+                    startActivity(intent1);
                 }
                 break;
             case R.id.ll_released_record:
@@ -109,8 +111,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 if (!mIsLogin) {
                     toastLoginTip();
                 } else {
-                    Intent intent1 = new Intent(getActivity(), ChangePassword.class);
-                    startActivity(intent1);
+                    Intent intent2 = new Intent(getActivity(), ChangePassword.class);
+                    startActivity(intent2);
                 }
                 break;
             case R.id.ll_log_out:

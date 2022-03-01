@@ -42,6 +42,9 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.navigation_fragment, container, false);
         init(view);
+        mGoods.setOnClickListener(this);
+        mLostAndFound.setOnClickListener(this);
+        mMine.setOnClickListener(this);
         return view;
     }
 
@@ -56,9 +59,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         iv_mine = (ImageView) view.findViewById(R.id.iv_mine);
         tv_mine = (TextView) view.findViewById(R.id.tv_mine);
 
-        mGoods.setOnClickListener(this);
-        mLostAndFound.setOnClickListener(this);
-        mMine.setOnClickListener(this);
         mFragmentManager = getActivity().getSupportFragmentManager();
     }
 
@@ -67,15 +67,21 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.ll_goods:
                 replaceFragment(new GoodsListFragment());
-                changeTabColor(R.id.ll_goods);
+                isGoodsSelect(true);
+                isLostAndFoundSelect(false);
+                isMineSelect(false);
                 break;
             case R.id.ll_lost_and_found:
                 replaceFragment(new LostListFragment());
-                changeTabColor(R.id.ll_lost_and_found);
+                isGoodsSelect(false);
+                isLostAndFoundSelect(true);
+                isMineSelect(false);
                 break;
             case R.id.ll_mine:
                 replaceFragment(new MineFragment());
-                changeTabColor(R.id.ll_mine);
+                isGoodsSelect(false);
+                isLostAndFoundSelect(false);
+                isMineSelect(true);
                 break;
             default:
                 Toast.makeText(getActivity(), "程序出错，请重新启动", Toast.LENGTH_LONG).show();
@@ -89,28 +95,33 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         mFragmentTransaction.commit();
     }
 
-    private void changeTabColor(int id) {
-        if (id == R.id.ll_goods) {
+    private void isGoodsSelect(boolean isSelect) {
+        if (isSelect) {
             iv_goods.setBackground(getResources().getDrawable(R.drawable.goods_select));
             tv_goods.setTextColor(getResources().getColor(R.color.red));
-            iv_lost_and_found.setBackground(getResources().getDrawable(R.drawable.lost_and_found_no_select));
-            tv_lost_and_found.setTextColor(getResources().getColor(R.color.black));
-            iv_mine.setBackground(getResources().getDrawable(R.drawable.mine_no_select));
-            tv_mine.setTextColor(getResources().getColor(R.color.black));
-        } else if (id == R.id.ll_lost_and_found) {
-            iv_goods.setBackground(getResources().getDrawable(R.drawable.goods_no_select));
-            tv_goods.setTextColor(getResources().getColor(R.color.black));
-            iv_lost_and_found.setBackground(getResources().getDrawable(R.drawable.lost_and_found_select));
-            tv_lost_and_found.setTextColor(getResources().getColor(R.color.red));
-            iv_mine.setBackground(getResources().getDrawable(R.drawable.mine_no_select));
-            tv_mine.setTextColor(getResources().getColor(R.color.black));
         } else {
             iv_goods.setBackground(getResources().getDrawable(R.drawable.goods_no_select));
             tv_goods.setTextColor(getResources().getColor(R.color.black));
+        }
+    }
+
+    private void isLostAndFoundSelect(boolean isSelect) {
+        if (isSelect) {
+            iv_lost_and_found.setBackground(getResources().getDrawable(R.drawable.lost_and_found_select));
+            tv_lost_and_found.setTextColor(getResources().getColor(R.color.red));
+        } else {
             iv_lost_and_found.setBackground(getResources().getDrawable(R.drawable.lost_and_found_no_select));
             tv_lost_and_found.setTextColor(getResources().getColor(R.color.black));
+        }
+    }
+
+    private void isMineSelect(boolean isSelect) {
+        if (isSelect) {
             iv_mine.setBackground(getResources().getDrawable(R.drawable.mine_select));
             tv_mine.setTextColor(getResources().getColor(R.color.red));
+        } else {
+            iv_mine.setBackground(getResources().getDrawable(R.drawable.mine_no_select));
+            tv_mine.setTextColor(getResources().getColor(R.color.black));
         }
     }
 }

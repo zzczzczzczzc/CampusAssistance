@@ -17,11 +17,14 @@
     <string name="is_sure_log_out">是否退出登录</string>
     <string name="log_out">退出登录</string>
 
+    <!--release-->
     <string name="description">描述</string>
     <string name="prices">价格</string>
-    <string name="goods_name">名称</string>
-    <string name="input_goods_name">请输入商品名称</string>
-    <string name="input_goods_prices">请输入商品价格</string>
+    <string name="input_goods_prices">请输入商品价格（单位：元）</string>
+    <string name="tele">电话</string>
+    <string name="input_tele">请输入电话号码</string>
+    <string name="input_description">请输入商品描述</string>
+    <string name="release_good">发布信息</string>
 
     <!--account-->
     <string name="account">账号：</string>
