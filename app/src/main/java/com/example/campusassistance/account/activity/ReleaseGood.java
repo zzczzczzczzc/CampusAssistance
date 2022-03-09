@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
@@ -32,7 +33,10 @@ import com.example.campusassistance.R;
 import com.example.campusassistance.account.servlet.Login;
 import com.example.campusassistance.init.servlet.ServerConnection;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -48,6 +52,10 @@ public class ReleaseGood extends AppCompatActivity implements View.OnClickListen
     //裁剪请求码
     private final int REQUEST_CODE_CROP = 1002;
     private Bitmap mBitmap;
+//    //图片存放绝对路径
+//    private String imagePath = "D:/apache-tomcat-8.5.66/webapps/picture/goods/";
+//    //图片名称
+//    private String imageName;
 
     private EditText mTele;
     private EditText mPrices;
@@ -108,17 +116,19 @@ public class ReleaseGood extends AppCompatActivity implements View.OnClickListen
                 //获取图片路径
                 Uri selectedImageUri = data.getData();
 //                String[] filePathColumns = {MediaStore.Images.Media.DATA};
-//                Cursor c = getContentResolver().query(selectedImage, filePathColumns, null, null, null);
+//                Cursor c = getContentResolver().query(selectedImageUri, filePathColumns, null, null, null);
 //                c.moveToFirst();
 //                int columnIndex = c.getColumnIndex(filePathColumns[0]);
 //                String photoPath = c.getString(columnIndex);
 //                c.close();
-//                //根据路径加载图片
+//                imageName = getImageName(photoPath);
+                //根据路径加载图片
 //                mBitmap = BitmapFactory.decodeFile(photoPath);
                 cropPicture(selectedImageUri);
                 break;
             case REQUEST_CODE_CROP:
                 mBitmap = data.getParcelableExtra("data");
+//                bitmapToFile();
                 mAddPicture.setImageBitmap(mBitmap);
                 break;
             default:
@@ -126,14 +136,40 @@ public class ReleaseGood extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+//    private String getImageName(String path) {
+//        String[] temp = path.split("/");
+//        if (temp.length > 1) {
+//            return temp[temp.length - 1];
+//        }
+//        return "";
+//    }
+
+//    private void bitmapToFile() {
+//        try {
+//            if (mBitmap != null) {
+////                String path = imagePath + imageName;
+//                String path = imagePath + "123.txt";
+//                File file = new File(path);
+//                file.createNewFile();
+////                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+////                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+////                bos.flush();
+////                bos.close();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+
     private void cropPicture(Uri uri) {
         Intent cropPictureIntent = new Intent("com.android.camera.action.CROP");
         cropPictureIntent.setDataAndType(uri, "image/*");
         cropPictureIntent.putExtra("crop", true);
         cropPictureIntent.putExtra("aspectX", 1);
         cropPictureIntent.putExtra("aspectY", 1);
-        cropPictureIntent.putExtra("outputX", (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
-        cropPictureIntent.putExtra("outputY", (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
+        cropPictureIntent.putExtra("outputX", (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 180, getResources().getDisplayMetrics()));
+        cropPictureIntent.putExtra("outputY", (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 180, getResources().getDisplayMetrics()));
         cropPictureIntent.putExtra("return-data", true);
         cropPictureIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         cropPictureIntent.putExtra("noFaceDetection", true);
@@ -147,17 +183,12 @@ public class ReleaseGood extends AppCompatActivity implements View.OnClickListen
         String picture = Base64.encodeToString(bitmapToByteArray(), Base64.NO_WRAP);
         String userId = getSharedPreferences("Login", MODE_PRIVATE).getString("userId", "");
         String goodId = userId;
-//        String responseText = "";
 
-//        Handler handler = new Handler() {
-//            @Override
-//            public void handleMessage(@NonNull Message msg) {
-//                if (msg.what == 1) {
-//                    byte[] test = Base64.decode((String) msg.obj, Base64.NO_WRAP);
-//                    mAddPicture.setImageBitmap(byteToBitmap(test));
-//                }
-//            }
-//        };
+        if (TextUtils.isEmpty(tele) || TextUtils.isEmpty(prices) || TextUtils.isEmpty(description)
+                || TextUtils.isEmpty(picture) || TextUtils.isEmpty(userId) || TextUtils.isEmpty(goodId)) {
+            Toast.makeText(ReleaseGood.this, "请输入完整的信息", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         new Thread(new Runnable() {
             @Override
@@ -177,8 +208,10 @@ public class ReleaseGood extends AppCompatActivity implements View.OnClickListen
                     Looper.prepare();
                     if ("True".equals(responseText)) {
                         Toast.makeText(ReleaseGood.this, "发布成功", Toast.LENGTH_SHORT).show();
-                    } else {
+                    } else if (("False").equals(responseText)) {
                         Toast.makeText(ReleaseGood.this, "发布失败，请重新发布", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ReleaseGood.this, "服务器连接出现错误", Toast.LENGTH_SHORT).show();
                     }
                     finish();
                     Looper.loop();

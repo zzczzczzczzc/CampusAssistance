@@ -1,5 +1,7 @@
 package com.example.campusassistance.init.servlet;
 
+import android.text.TextUtils;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -24,10 +26,12 @@ public class ServerConnection {
             conn.setUseCaches(false);//设置POST请求方式不能够使用缓存
             conn.connect();
 
-            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
-            dataOutputStream.write(params.getBytes("UTF-8"));
-            dataOutputStream.flush();
-            dataOutputStream.close();
+//            if (!TextUtils.isEmpty(params)) {
+                DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
+                dataOutputStream.write(params.getBytes("UTF-8"));
+                dataOutputStream.flush();
+                dataOutputStream.close();
+//            }
 
             InputStream inputStream = conn.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));

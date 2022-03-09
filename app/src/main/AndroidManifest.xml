@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusAssistance">
-        <activity android:name=".account.activity.ReleaseGood"></activity>
+        <activity android:name=".account.activity.GoodsReleasedRecord"></activity>
+        <activity android:name=".account.activity.ReleaseGood" />
         <activity android:name=".account.servlet.ChangePassword" />
         <activity android:name=".account.servlet.Login" />
         <activity android:name=".goods.activity.OneByOneChatAcitvity" />

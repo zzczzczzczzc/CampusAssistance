@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_goods_display"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/iv_thing"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/avatar" />
 
     <TextView
         android:id="@+id/tv_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/description" />
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/description"
+        android:textSize="12dp" />
 
     <TextView
         android:id="@+id/tv_prices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/prices" />
+        android:text="@string/prices"
+        android:textColor="@color/red"
+        android:textSize="15dp" />
 
 </LinearLayout>

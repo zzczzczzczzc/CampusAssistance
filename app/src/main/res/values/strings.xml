@@ -24,7 +24,9 @@
     <string name="tele">电话</string>
     <string name="input_tele">请输入电话号码</string>
     <string name="input_description">请输入商品描述</string>
-    <string name="release_good">发布信息</string>
+    <string name="release_good">确认发布</string>
+    <string name="released_time">发布时间</string>
+    <string name="no_released_record">暂无记录</string>
 
     <!--account-->
     <string name="account">账号：</string>
@@ -39,7 +41,6 @@
     <!--goods-->
     <string name="want_to_search">请输入想要搜索的内容</string>
     <string name="search">搜索</string>
-
 
 
 </resources>
