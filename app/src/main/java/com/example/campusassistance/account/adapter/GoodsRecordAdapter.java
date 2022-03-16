@@ -19,6 +19,7 @@ import com.example.campusassistance.goods.entity.Good;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class GoodsRecordAdapter extends RecyclerView.Adapter<GoodsRecordAdapter.
 
     private ArrayList<Good> mDataList;
     private Context mContext;
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public GoodsRecordAdapter(ArrayList<Good> list) {
         this.mDataList = list;
@@ -40,7 +42,7 @@ public class GoodsRecordAdapter extends RecyclerView.Adapter<GoodsRecordAdapter.
         holder.mDescription.setText(good.getDescription());
         holder.mPrices.setText(good.getPrices());
         holder.mTelephone.setText(good.getTelephone());
-        holder.mReleasedTime.setText(good.getTime());
+        holder.mReleasedTime.setText(df.format(good.getTime()));
         holder.mGoodsReocrd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

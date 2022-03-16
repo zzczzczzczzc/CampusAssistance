@@ -103,9 +103,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     client.newCall(request).enqueue(new Callback() {
                         @Override
                         public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                            Looper.prepare();
-                            Toast.makeText(Login.this, "服务器连接出现错误", Toast.LENGTH_SHORT).show();
-                            Looper.loop();
+//                            Looper.prepare();
+//                            Toast.makeText(Login.this, "服务器连接出现错误", Toast.LENGTH_SHORT).show();
+//                            Looper.loop();
                         }
 
                         @Override

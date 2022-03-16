@@ -17,12 +17,16 @@ import com.example.campusassistance.R;
 import com.example.campusassistance.account.fragment.MineFragment;
 import com.example.campusassistance.goods.fragment.GoodsListFragment;
 import com.example.campusassistance.lost.fragment.LostListFragment;
+import com.example.campusassistance.message.fragment.MessageFragment;
+
+import org.w3c.dom.Text;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener {
 
     private LinearLayout mGoods;
     private LinearLayout mLostAndFound;
     private LinearLayout mMine;
+    private LinearLayout mMessage;
     private FragmentManager mFragmentManager;
 
     private ImageView iv_goods;
@@ -31,6 +35,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     private TextView tv_lost_and_found;
     private ImageView iv_mine;
     private TextView tv_mine;
+    private ImageView iv_message;
+    private TextView tv_message;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         mGoods.setOnClickListener(this);
         mLostAndFound.setOnClickListener(this);
         mMine.setOnClickListener(this);
+        mMessage.setOnClickListener(this);
         return view;
     }
 
@@ -58,6 +65,9 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         mMine = (LinearLayout) view.findViewById(R.id.ll_mine);
         iv_mine = (ImageView) view.findViewById(R.id.iv_mine);
         tv_mine = (TextView) view.findViewById(R.id.tv_mine);
+        mMessage = (LinearLayout) view.findViewById(R.id.ll_message);
+        iv_message = (ImageView) view.findViewById(R.id.iv_message);
+        tv_message = (TextView) view.findViewById(R.id.tv_message);
 
         mFragmentManager = getActivity().getSupportFragmentManager();
     }
@@ -69,19 +79,29 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 replaceFragment(new GoodsListFragment());
                 isGoodsSelect(true);
                 isLostAndFoundSelect(false);
+                isMessageSelect(false);
                 isMineSelect(false);
                 break;
             case R.id.ll_lost_and_found:
                 replaceFragment(new LostListFragment());
                 isGoodsSelect(false);
                 isLostAndFoundSelect(true);
+                isMessageSelect(false);
                 isMineSelect(false);
                 break;
             case R.id.ll_mine:
                 replaceFragment(new MineFragment());
                 isGoodsSelect(false);
                 isLostAndFoundSelect(false);
+                isMessageSelect(false);
                 isMineSelect(true);
+                break;
+            case R.id.ll_message:
+                replaceFragment(new MessageFragment());
+                isGoodsSelect(false);
+                isLostAndFoundSelect(false);
+                isMessageSelect(true);
+                isMineSelect(false);
                 break;
             default:
                 Toast.makeText(getActivity(), "程序出错，请重新启动", Toast.LENGTH_LONG).show();
@@ -122,6 +142,16 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         } else {
             iv_mine.setBackground(getResources().getDrawable(R.drawable.mine_no_select));
             tv_mine.setTextColor(getResources().getColor(R.color.black));
+        }
+    }
+
+    private void isMessageSelect(boolean isSelect) {
+        if (isSelect) {
+            iv_message.setBackground(getResources().getDrawable(R.drawable.message_select));
+            tv_message.setTextColor(getResources().getColor(R.color.red));
+        } else {
+            iv_message.setBackground(getResources().getDrawable(R.drawable.messge_no_select));
+            tv_message.setTextColor(getResources().getColor(R.color.black));
         }
     }
 }

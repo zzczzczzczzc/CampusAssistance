@@ -1,4 +1,4 @@
-package com.example.campusassistance.init;
+package com.example.campusassistance.init.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

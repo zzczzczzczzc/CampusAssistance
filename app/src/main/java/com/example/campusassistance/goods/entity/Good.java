@@ -1,5 +1,7 @@
 package com.example.campusassistance.goods.entity;
 
+import java.sql.Timestamp;
+
 public class Good {
 
     public String userId;
@@ -8,13 +10,13 @@ public class Good {
     public String telephone;
     public String description;
     public String picture;
-    public String time;
+    public Timestamp time;
 
-    public String getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 

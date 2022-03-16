@@ -18,9 +18,9 @@
         <activity android:name=".account.activity.ReleaseGood" />
         <activity android:name=".account.servlet.ChangePassword" />
         <activity android:name=".account.servlet.Login" />
-        <activity android:name=".goods.activity.OneByOneChatAcitvity" />
+        <activity android:name=".message.activity.OneByOneChatAcitvity" />
         <activity android:name=".goods.activity.GoodsDetailActivity" />
-        <activity android:name=".init.MainActivity">
+        <activity android:name=".init.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

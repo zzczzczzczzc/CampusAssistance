@@ -2,9 +2,6 @@ package com.example.campusassistance.goods.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +12,11 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.campusassistance.R;
-import com.example.campusassistance.goods.activity.OneByOneChatAcitvity;
+import com.example.campusassistance.goods.activity.GoodsDetailActivity;
+import com.example.campusassistance.message.activity.OneByOneChatAcitvity;
 import com.example.campusassistance.goods.entity.Good;
 
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 
 import common.StringToBitmap;
 
@@ -29,6 +25,9 @@ public class GoodsListAdapter extends RecyclerView.Adapter<GoodsListAdapter.View
     private ArrayList<Good> dataList;
     private Context mContext;
 
+//    private String sendUserId;
+//    private String receiveUserId;
+
     public GoodsListAdapter(ArrayList<Good> dataList) {
         this.dataList = dataList;
     }
@@ -36,6 +35,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<GoodsListAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
+//        sendUserId = mContext.getSharedPreferences("Login", Context.MODE_PRIVATE).getString("userId", "");
         View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_view_goods, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -43,13 +43,19 @@ public class GoodsListAdapter extends RecyclerView.Adapter<GoodsListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tv_description.setText(dataList.get(position).getDescription());
-        holder.tv_prices.setText("价格：" + dataList.get(position).getPrices() + "元");
-        holder.iv_picture.setImageBitmap(StringToBitmap.stringToBitmap(mContext, dataList.get(position).getPicture()));
+        Good good = dataList.get(position);
+//        receiveUserId = good.getUserId();
+        holder.tv_description.setText(good.getDescription());
+        holder.tv_prices.setText("价格：" + good.getPrices() + "元");
+        holder.iv_picture.setImageBitmap(StringToBitmap.stringToBitmap(mContext, good.getPicture()));
+//        final String tempSendUserId = sendUserId, tempReceiveUserId = receiveUserId;
         holder.ll_goodsDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, OneByOneChatAcitvity.class);
+                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+                //将good序列化，传到GoodsDetailActivity中
+//                intent.putExtra("sendUserId", tempSendUserId);
+//                intent.putExtra("receiveUserId", tempReceiveUserId);
                 mContext.startActivity(intent);
             }
         });
