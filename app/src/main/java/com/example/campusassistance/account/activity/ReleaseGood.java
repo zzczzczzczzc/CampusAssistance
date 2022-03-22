@@ -273,15 +273,15 @@ public class ReleaseGood extends AppCompatActivity implements View.OnClickListen
         return true;
     }
 
-    private Bitmap byteToBitmap(byte[] imageData) {
-        Bitmap imageBitmap = null;
-        if (imageData.length > 0) {
-            //将字节数组转化为位图
-            imageBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-        } else {
-            //没有上传图片，使用系统默认图片
-            imageBitmap = BitmapFactory.decodeResource(ReleaseGood.this.getResources(), R.drawable.avatar);
-        }
-        return imageBitmap;
-    }
+//    private Bitmap byteToBitmap(byte[] imageData) {
+//        Bitmap imageBitmap = null;
+//        if (imageData.length > 0) {
+//            //将字节数组转化为位图
+//            imageBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+//        } else {
+//            //没有上传图片，使用系统默认图片
+//            imageBitmap = BitmapFactory.decodeResource(ReleaseGood.this.getResources(), R.drawable.avatar);
+//        }
+//        return imageBitmap;
+//    }
 }

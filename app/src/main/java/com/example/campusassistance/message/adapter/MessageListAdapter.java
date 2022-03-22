@@ -1,5 +1,6 @@
 package com.example.campusassistance.message.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -27,7 +28,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     private ArrayList<User> mUsers;
     private String mSelfUserId;
     private Context mContext;
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public MessageListAdapter(ArrayList<User> dataList) {
         this.mUsers = dataList;

@@ -101,7 +101,7 @@
             android:id="@+id/ll_change_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -128,10 +128,53 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/ll_release_lost_and_found_good"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/lost_and_found" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/release_lost_and_found"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_release_lost_and_found_good_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/released_record" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/released_lost_and_found_good_record"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ll_log_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginEnd="30dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 

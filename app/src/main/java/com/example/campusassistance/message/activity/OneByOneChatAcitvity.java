@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,14 +19,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.campusassistance.R;
+import com.example.campusassistance.init.activity.MainActivity;
 import com.example.campusassistance.message.adapter.MessageChatAdapter;
 import com.example.campusassistance.message.adapter.MessageListAdapter;
 import com.example.campusassistance.message.entity.User;
+import com.example.campusassistance.message.service.MessageService;
 import com.mysql.cj.util.StringUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -61,6 +67,31 @@ public class OneByOneChatAcitvity extends AppCompatActivity implements View.OnCl
     private MessageChatAdapter mAdapter;
     private ArrayList<User> mUsers;
 
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MessageService.MessageBinder binder = (MessageService.MessageBinder) service;
+            MessageService messageService = binder.getService();
+            //由于mWebSocket的值为异步获取（在子线程中赋值），第一次连接的时候值为null，
+            // 第二次连接重新赋值，但第一次连接并没有用到该变量，此时为第二次连接，因此此处不用同步处理
+            mWebSocket = messageService.messageWebSocket;
+            messageService.setCallback(new MessageService.Callback() {
+                @Override
+                public void receiveMsg(User user) {
+                    Message msg = new Message();
+                    msg.what = 2;
+                    msg.obj = user;
+                    handler.sendMessage(msg);
+                }
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            //
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,10 +99,12 @@ public class OneByOneChatAcitvity extends AppCompatActivity implements View.OnCl
         init();
         chatName.setText(receiveUserId);
         getChatMessage();
-        connect();
         sendMessage.setOnClickListener(this);
         back.setOnClickListener(this);
+        Intent intentService = new Intent(OneByOneChatAcitvity.this, MessageService.class);
+        bindService(intentService, connection, BIND_AUTO_CREATE);
     }
+
 
     private void init() {
         Intent intent = this.getIntent();
@@ -100,7 +133,11 @@ public class OneByOneChatAcitvity extends AppCompatActivity implements View.OnCl
                 user.setMessage(message);
                 user.setDateTime(new Timestamp(System.currentTimeMillis()));
                 user.setBothUserId(receiveUserId + "/" + sendUserId);
-                mWebSocket.send(user.toString());
+                if (mWebSocket != null) {
+                    mWebSocket.send(user.toString());
+                } else {
+                    //TODO
+                }
                 mUsers.add(user);
                 updateMessage();
                 inputMessage.setText("");
@@ -116,9 +153,21 @@ public class OneByOneChatAcitvity extends AppCompatActivity implements View.OnCl
                 mAdapter = new MessageChatAdapter(mUsers);
                 chatMessage.setAdapter(mAdapter);
                 chatMessage.scrollToPosition(mUsers.size() - 1);
+            } else if (msg.what == 2) {
+                User user = (User) msg.obj;
+                if (user.getSendUserId().equals(receiveUserId) && user.getReceiveUserId().equals(sendUserId)) {
+                    mUsers.add((User) msg.obj);
+                    updateMessage();
+                }
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
+    }
 
     //获取之前的聊天记录
     private void getChatMessage() {
@@ -145,15 +194,15 @@ public class OneByOneChatAcitvity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String responText = response.body().string();
-                    if (responseSuccessCode.equals(responText)) {
-                        return;
-                    }
+//                    if (responseSuccessCode.equals(String.valueOf(response.code()))) {
+//                        return;
+//                    }
                     if (!StringUtils.isNullOrEmpty(responText)) {
                         JSONArray array = JSON.parseArray(responText);
                         for (int i = 0; i < array.size(); ++i) {
                             JSONObject object = array.getJSONObject(i);
                             User user = JSON.toJavaObject(object, User.class);
-                            mUsers.add(JSON.toJavaObject(object, User.class));
+                            mUsers.add(user);
                         }
                         Message message = handler.obtainMessage();
                         message.what = 1;
@@ -164,6 +213,7 @@ public class OneByOneChatAcitvity extends AppCompatActivity implements View.OnCl
         }).start();
     }
 
+    //更新聊天内容
     private void updateMessage() {
         runOnUiThread(new Runnable() {
             @Override
@@ -172,49 +222,5 @@ public class OneByOneChatAcitvity extends AppCompatActivity implements View.OnCl
                 chatMessage.scrollToPosition(mUsers.size() - 1);
             }
         });
-    }
-
-    //当前聊天连接
-    private void connect() {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .readTimeout(300, TimeUnit.SECONDS)//设置读取超时时间
-                .writeTimeout(300, TimeUnit.SECONDS)//设置写的超时时间
-                .connectTimeout(300, TimeUnit.SECONDS)//设置连接超时时间
-                .build();
-
-        Request request = new Request.Builder().url("ws://192.168.31.80:8081/chat/" + sendUserId + "/" + receiveUserId).build();
-        client.newWebSocket(request, new WebSocketListener() {
-            @Override
-            public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
-                super.onClosed(webSocket, code, reason);
-            }
-
-            @Override
-            public void onClosing(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
-                super.onClosing(webSocket, code, reason);
-            }
-
-            @Override
-            public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @Nullable Response response) {
-                super.onFailure(webSocket, t, response);
-            }
-
-            @Override
-            public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
-                super.onMessage(webSocket, text);
-                if (!StringUtils.isNullOrEmpty(text)) {
-                    User user = JSON.parseObject(text, User.class);
-                    mUsers.add(user);
-                    updateMessage();
-                }
-            }
-
-            @Override
-            public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
-                super.onOpen(webSocket, response);
-                mWebSocket = webSocket;
-            }
-        });
-        client.dispatcher().executorService().shutdown();
     }
 }

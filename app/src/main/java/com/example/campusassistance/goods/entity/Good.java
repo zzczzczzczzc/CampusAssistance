@@ -1,8 +1,9 @@
 package com.example.campusassistance.goods.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Good {
+public class Good implements Serializable {
 
     public String userId;
     public String goodId;

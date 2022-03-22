@@ -14,7 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusAssistance">
-        <activity android:name=".account.activity.GoodsReleasedRecord"></activity>
+        <activity android:name=".lost.activity.ReleasedLostAndFoundGoodRecord"></activity>
+        <activity android:name=".lost.activity.ReleaseLostAndFoundGood" />
+
+        <service
+            android:name=".message.service.MessageService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".account.activity.GoodsReleasedRecord" />
         <activity android:name=".account.activity.ReleaseGood" />
         <activity android:name=".account.servlet.ChangePassword" />
         <activity android:name=".account.servlet.Login" />

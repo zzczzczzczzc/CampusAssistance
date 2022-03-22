@@ -23,6 +23,8 @@ import com.example.campusassistance.account.activity.GoodsReleasedRecord;
 import com.example.campusassistance.account.activity.ReleaseGood;
 import com.example.campusassistance.account.servlet.ChangePassword;
 import com.example.campusassistance.account.servlet.Login;
+import com.example.campusassistance.lost.activity.ReleaseLostAndFoundGood;
+import com.example.campusassistance.lost.activity.ReleasedLostAndFoundGoodRecord;
 
 public class MineFragment extends Fragment implements View.OnClickListener {
 
@@ -37,6 +39,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mReleaseGoods;
     private LinearLayout mReleasedRecord;
     private LinearLayout mChangePassword;
+    private LinearLayout mReleaseLostAndFoundGoods;
+    private LinearLayout mReleasedLostAndFoundGoodsRecord;
     private LinearLayout mLogOut;
     private TextView mName;
 
@@ -61,6 +65,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         mReleaseGoods = (LinearLayout) view.findViewById(R.id.ll_release_goods);
         mReleasedRecord = (LinearLayout) view.findViewById(R.id.ll_released_record);
         mChangePassword = (LinearLayout) view.findViewById(R.id.ll_change_password);
+        mReleaseLostAndFoundGoods = (LinearLayout) view.findViewById(R.id.ll_release_lost_and_found_good);
+        mReleasedLostAndFoundGoodsRecord = (LinearLayout) view.findViewById(R.id.ll_release_lost_and_found_good_record);
         mLogOut = (LinearLayout) view.findViewById(R.id.ll_log_out);
         mName = (TextView) view.findViewById(R.id.tv_name);
 
@@ -69,6 +75,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         mReleaseGoods.setOnClickListener(this);
         mReleasedRecord.setOnClickListener(this);
         mChangePassword.setOnClickListener(this);
+        mReleaseLostAndFoundGoods.setOnClickListener(this);
+        mReleasedLostAndFoundGoodsRecord.setOnClickListener(this);
         mLogOut.setOnClickListener(this);
 
         reflashLoginState();
@@ -115,6 +123,22 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 } else {
                     Intent intent3 = new Intent(getActivity(), ChangePassword.class);
                     startActivity(intent3);
+                }
+                break;
+            case R.id.ll_release_lost_and_found_good:
+                if (!mIsLogin) {
+                    toastLoginTip();
+                } else {
+                    Intent intent4 = new Intent(getActivity(), ReleaseLostAndFoundGood.class);
+                    startActivity(intent4);
+                }
+                break;
+            case R.id.ll_release_lost_and_found_good_record:
+                if (!mIsLogin) {
+                    toastLoginTip();
+                } else {
+                    Intent intent5 = new Intent(getActivity(), ReleasedLostAndFoundGoodRecord.class);
+                    startActivity(intent5);
                 }
                 break;
             case R.id.ll_log_out:

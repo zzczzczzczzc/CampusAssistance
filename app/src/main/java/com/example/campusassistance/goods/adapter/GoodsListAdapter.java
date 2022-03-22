@@ -13,20 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.campusassistance.R;
 import com.example.campusassistance.goods.activity.GoodsDetailActivity;
-import com.example.campusassistance.message.activity.OneByOneChatAcitvity;
 import com.example.campusassistance.goods.entity.Good;
 
 import java.util.ArrayList;
 
-import common.StringToBitmap;
+import com.example.campusassistance.common.StringToBitmap;
 
 public class GoodsListAdapter extends RecyclerView.Adapter<GoodsListAdapter.ViewHolder> {
 
     private ArrayList<Good> dataList;
     private Context mContext;
-
-//    private String sendUserId;
-//    private String receiveUserId;
 
     public GoodsListAdapter(ArrayList<Good> dataList) {
         this.dataList = dataList;
@@ -44,18 +40,15 @@ public class GoodsListAdapter extends RecyclerView.Adapter<GoodsListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Good good = dataList.get(position);
-//        receiveUserId = good.getUserId();
         holder.tv_description.setText(good.getDescription());
         holder.tv_prices.setText("价格：" + good.getPrices() + "元");
         holder.iv_picture.setImageBitmap(StringToBitmap.stringToBitmap(mContext, good.getPicture()));
-//        final String tempSendUserId = sendUserId, tempReceiveUserId = receiveUserId;
         holder.ll_goodsDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, GoodsDetailActivity.class);
                 //将good序列化，传到GoodsDetailActivity中
-//                intent.putExtra("sendUserId", tempSendUserId);
-//                intent.putExtra("receiveUserId", tempReceiveUserId);
+                intent.putExtra("good_detail", good);
                 mContext.startActivity(intent);
             }
         });

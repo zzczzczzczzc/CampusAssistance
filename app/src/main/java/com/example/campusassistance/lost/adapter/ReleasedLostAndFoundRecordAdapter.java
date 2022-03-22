@@ -1,7 +1,9 @@
-package com.example.campusassistance.account.adapter;
+package com.example.campusassistance.lost.adapter;
 
 import android.content.Context;
 import android.os.Looper;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +15,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.campusassistance.R;
-import com.example.campusassistance.goods.entity.Good;
+import com.example.campusassistance.common.StringToBitmap;
+import com.example.campusassistance.lost.activity.ReleaseLostAndFoundGood;
+import com.example.campusassistance.lost.entity.LostAndFoundGood;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import com.example.campusassistance.common.StringToBitmap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,29 +35,36 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class GoodsRecordAdapter extends RecyclerView.Adapter<GoodsRecordAdapter.ViewHolder> {
+public class ReleasedLostAndFoundRecordAdapter extends RecyclerView.Adapter<ReleasedLostAndFoundRecordAdapter.RecordViewHolder> {
 
-    private ArrayList<Good> mDataList;
+    private ArrayList<LostAndFoundGood> mLostAndFoundGoodsList;
     private Context mContext;
-    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public GoodsRecordAdapter(ArrayList<Good> list) {
-        this.mDataList = list;
+    public ReleasedLostAndFoundRecordAdapter(ArrayList<LostAndFoundGood> dataList) {
+        this.mLostAndFoundGoodsList = dataList;
+    }
+
+    @NonNull
+    @NotNull
+    @Override
+    public RecordViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
+        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_view_lost_and_found_good, parent, false);
+        RecordViewHolder viewHolder = new RecordViewHolder(view);
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        Good good = mDataList.get(position);
-        holder.mPicture.setImageBitmap(StringToBitmap.stringToBitmap(mContext, good.getPicture()));
-        holder.mDescription.setText(good.getDescription());
-        holder.mPrices.setText(good.getPrices());
-        holder.mTelephone.setText(good.getTelephone());
-        holder.mReleasedTime.setText(df.format(good.getTime()));
-        holder.mGoodsReocrd.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(@NonNull @NotNull RecordViewHolder holder, int position) {
+        LostAndFoundGood good = mLostAndFoundGoodsList.get(position);
+        holder.lostAndFoundPicture.setImageBitmap(StringToBitmap.stringToBitmap(mContext, good.getPicture()));
+        holder.lostAndFonudDescription.setText(good.getDescription());
+        holder.lostAndFoundTelephone.setText(good.getContactWay());
+        holder.lostAndFoundGood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                mDataList.remove(position);
+                //TODO：点击删除
+                mLostAndFoundGoodsList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, getItemCount());
                 deleteMsg(good.getGoodId());
@@ -66,7 +77,7 @@ public class GoodsRecordAdapter extends RecyclerView.Adapter<GoodsRecordAdapter.
             @Override
             public void run() {
                 try {
-                    final String path = "http://192.168.31.80:8080/Goods/DeleteGoodMsg";
+                    final String path = "http://192.168.31.80:8080/LostAndFound/DeleteLostAndFoundMsg";
                     OkHttpClient client = new OkHttpClient();
                     FormBody.Builder builder = new FormBody.Builder();
                     builder.add("goodId", goodId);
@@ -105,35 +116,22 @@ public class GoodsRecordAdapter extends RecyclerView.Adapter<GoodsRecordAdapter.
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return mLostAndFoundGoodsList.size();
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
-        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_view_goods_record, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
-    }
+    class RecordViewHolder extends RecyclerView.ViewHolder {
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+        public LinearLayout lostAndFoundGood;
+        public ImageView lostAndFoundPicture;
+        public TextView lostAndFonudDescription;
+        public TextView lostAndFoundTelephone;
 
-        public LinearLayout mGoodsReocrd;
-        public ImageView mPicture;
-        public TextView mDescription;
-        public TextView mTelephone;
-        public TextView mPrices;
-        public TextView mReleasedTime;
-
-        public ViewHolder(View itemView) {
+        public RecordViewHolder(View itemView) {
             super(itemView);
-            mGoodsReocrd = itemView.findViewById(R.id.ll_goods_record);
-            mPicture = itemView.findViewById(R.id.iv_good_picture);
-            mDescription = itemView.findViewById(R.id.tv_description_record);
-            mTelephone = itemView.findViewById(R.id.tv_telephone_record);
-            mPrices = itemView.findViewById(R.id.tv_prices_record);
-            mReleasedTime = itemView.findViewById(R.id.tv_released_time_record);
+            lostAndFoundGood = itemView.findViewById(R.id.ll_release_lost_and_found_good);
+            lostAndFoundPicture = itemView.findViewById(R.id.iv_lost_and_found_good);
+            lostAndFonudDescription = itemView.findViewById(R.id.tv_lost_and_found_good_description);
+            lostAndFoundTelephone = itemView.findViewById(R.id.tv_lost_and_found_good_telephone);
         }
     }
-
 }

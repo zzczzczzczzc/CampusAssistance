@@ -1,6 +1,13 @@
 package com.example.campusassistance.init.fragment;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,10 +24,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.campusassistance.R;
 import com.example.campusassistance.account.fragment.MineFragment;
 import com.example.campusassistance.goods.fragment.GoodsListFragment;
-import com.example.campusassistance.lost.fragment.LostListFragment;
+import com.example.campusassistance.lost.fragment.LostAndFoundListFragment;
 import com.example.campusassistance.message.fragment.MessageFragment;
-
-import org.w3c.dom.Text;
+import com.example.campusassistance.message.service.MessageService;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener {
 
@@ -38,6 +45,27 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     private ImageView iv_message;
     private TextView tv_message;
 
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MessageService.MessageBinder binder = (MessageService.MessageBinder) service;
+            MessageService messageService = binder.getService();
+            messageService.setReceiveMsgCallback(new MessageService.ReceiveMsgCallback() {
+                @Override
+                public void toastReceiveMsg() {
+                    Message msg = handler.obtainMessage();
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                }
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            //
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +80,19 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         mLostAndFound.setOnClickListener(this);
         mMine.setOnClickListener(this);
         mMessage.setOnClickListener(this);
+        Intent intentService = new Intent(getActivity(), MessageService.class);
+        getActivity().bindService(intentService, connection, Context.BIND_AUTO_CREATE);
         return view;
     }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if (msg.what == 1) {
+                Toast.makeText(getActivity(), "收到新的信息", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     private void init(View view) {
         mGoods = (LinearLayout) view.findViewById(R.id.ll_goods);
@@ -83,7 +122,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 isMineSelect(false);
                 break;
             case R.id.ll_lost_and_found:
-                replaceFragment(new LostListFragment());
+                replaceFragment(new LostAndFoundListFragment());
                 isGoodsSelect(false);
                 isLostAndFoundSelect(true);
                 isMessageSelect(false);

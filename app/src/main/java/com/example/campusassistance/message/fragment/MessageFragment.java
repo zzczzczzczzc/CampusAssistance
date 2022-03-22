@@ -1,6 +1,7 @@
 package com.example.campusassistance.message.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -66,7 +67,9 @@ public class MessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.message_fragment, container, false);
         init(view);
-        requestMessageList();
+        if (!("").equals(mUserId)) {
+            requestMessageList();
+        }
         return view;
     }
 

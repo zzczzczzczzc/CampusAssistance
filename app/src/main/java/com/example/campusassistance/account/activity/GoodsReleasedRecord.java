@@ -57,6 +57,7 @@ public class GoodsReleasedRecord extends AppCompatActivity {
         @Override
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == 1) {
+                //TODO：复用item的时候排列乱了
                 mGoodsRecord.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                 mAdapter = new GoodsRecordAdapter(mDataList);
                 mGoodsRecord.setAdapter(mAdapter);
@@ -66,6 +67,7 @@ public class GoodsReleasedRecord extends AppCompatActivity {
     };
 
     private void requestGoodsInfo(String str) {
+        //TODO：更换成okhttp
         new Thread(new Runnable() {
             @Override
             public void run() {

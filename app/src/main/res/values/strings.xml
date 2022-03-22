@@ -12,11 +12,13 @@
     <string name="nickname">昵称</string>
     <string name="commonly_used">常用</string>
     <string name="release_goods">发布商品</string>
-    <string name="released_record">发布历史</string>
+    <string name="released_record">发布商品\n历史</string>
     <string name="change_password">修改密码</string>
     <string name="tip">提示</string>
     <string name="is_sure_log_out">是否退出登录</string>
     <string name="log_out">退出登录</string>
+    <string name="release_lost_and_found">发布失物\n招领</string>
+    <string name="released_lost_and_found_good_record">发布失物\n招领历史</string>
 
     <!--release-->
     <string name="description">描述</string>
@@ -28,6 +30,9 @@
     <string name="release_good">确认发布</string>
     <string name="released_time">发布时间</string>
     <string name="no_record">暂无记录</string>
+    <string name="contact_way">联系方式</string>
+    <string name="input_contact_way">请输入联系方式(微信或手机号)</string>
+    <string name="input_lost_and_found_good_description">请输入要发布的内容</string>
 
     <!--account-->
     <string name="account">账号：</string>
@@ -49,5 +54,10 @@
     <string name="send_message">发送</string>
     <string name="chat_record">聊天记录</string>
     <string name="last_time">时间</string>
+
+    <!--good_detail-->
+    <string name="description_content">描述内容</string>
+    <string name="chat_with_seller">与卖家进行联系</string>
+    <string name="seller">卖家</string>
 
 </resources>
